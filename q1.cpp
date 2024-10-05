@@ -16,9 +16,11 @@ class Board{
     private:
         int size;
         Node* head;
+        Node* current;
     public:
         Board(){
             head=NULL;
+            current=head;
             size=0;
         }
 
@@ -54,8 +56,8 @@ class Board{
                 }
             }
             for(int i=0 ; i<3; i++){
-                my_board[rand()%size][rand()%size]->ch='c';
                 my_board[rand()%size][rand()%size]->ch='B';    
+                my_board[rand()%size][rand()%size]->ch='c';
             }
             int rand1, rand2;
             bool check=true;
@@ -81,6 +83,23 @@ class Board{
             }
         }
 
+        void setCurrent(){
+            Node* curr = head;
+            for(int i=0 ; i<size; i++){
+                curr=head;
+                for(int j=0 ; j<i; j++){
+                    curr=curr->down;
+                }
+                for(int j=0 ; j<size; j++){
+                    if(curr->ch=='P'){
+                        current=curr;
+                        break;
+                    }
+                    curr = curr->right;
+                }
+            }
+        }
+
         void display(){
             Node* curr = head;
             for(int i=0 ; i<=size+1; i++){
@@ -94,7 +113,12 @@ class Board{
                     curr=curr->down;
                 }
                 for(int j=0 ; j<size; j++){
-                    cout << curr->ch << " ";
+                    if(curr->ch=='k'||curr->ch=='d'){
+                        cout << "- ";
+                    }
+                    else{
+                        cout << curr->ch << " ";
+                    }
                     curr = curr->right;
                 }
                 cout << "# ";
