@@ -71,6 +71,10 @@ class Board{
                     my_board[rand1][rand2]->ch='d';
                     check=false;
                 }
+                else{
+                    rand1=rand()%size;
+                    rand2=rand()%size;
+                }
             }
             rand1=rand()%size;
             rand2=rand()%size;
@@ -79,6 +83,10 @@ class Board{
                 if(my_board[rand1][rand2]->ch=='-'){
                     my_board[rand1][rand2]->ch='P';
                     check=false;
+                }
+                else{
+                    rand1=rand()%size;
+                    rand2=rand()%size;
                 }
             }
         }
@@ -99,42 +107,58 @@ class Board{
                 }
             }
         }
+        void move(char choice){
+            if(choice=='w'&&current->up!=NULL){
+                current=current->up;
+            }
+            else if(choice=='s'&&current->down!=NULL){
+                current=current->down;
+            }
+            else if(choice=='a'&&current->left!=NULL){
+                current=current->left;
+            }
+            else if(choice=='d'&&current->right!=NULL){
+                current=current->right;
+            }
+        }
 
         void display(){
             Node* curr = head;
             for(int i=0 ; i<=size+1; i++){
-                cout << "# ";
+                mvprintw(0,i*2,"#");
             }
-            cout << endl;
             for(int i=0 ; i<size; i++){
-                cout<<"# ";
+                mvprintw(i+1,0,"#");
                 curr=head;
                 for(int j=0 ; j<i; j++){
                     curr=curr->down;
                 }
                 for(int j=0 ; j<size; j++){
                     if(curr->ch=='k'||curr->ch=='d'){
-                        cout << "- ";
+                        mvprintw(i+1,(j+1)*2,"-");
                     }
                     else{
-                        cout << curr->ch << " ";
+                        mvprintw(i+1,(j+1)*2,"%c",curr->ch);
                     }
                     curr = curr->right;
                 }
-                cout << "# ";
+                mvprintw(i+1,(size+1)*2,"#");
                 cout << endl;
             }
             for(int i=0 ; i<=size+1; i++){
-                cout << "# ";
+                mvprintw(size+1,i*2,"#");
             }
-            cout << endl;
         }
-
 };
 
 int main(){
+    initscr();
+    curs_set(0);
     Board B1;
     B1.setBoard(9);
     B1.display();
-    
+    refresh();
+    B1.setCurrent();
+    getch();
+    endwin();
 }
