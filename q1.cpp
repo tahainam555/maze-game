@@ -109,17 +109,22 @@ class Board{
         }
         void move(char choice){
             if(choice=='w'&&current->up!=NULL){
+                current->ch='-';
                 current=current->up;
             }
             else if(choice=='s'&&current->down!=NULL){
+                current->ch='-';
                 current=current->down;
             }
             else if(choice=='a'&&current->left!=NULL){
+                current->ch='-';
                 current=current->left;
             }
             else if(choice=='d'&&current->right!=NULL){
+                current->ch='-';
                 current=current->right;
             }
+            current->ch='P';
         }
 
         void display(){
@@ -156,9 +161,14 @@ int main(){
     curs_set(0);
     Board B1;
     B1.setBoard(9);
-    B1.display();
-    refresh();
-    B1.setCurrent();
-    getch();
+    char choice='m';
+    while(choice!='e')
+    {
+        B1.display();
+        refresh();
+        B1.setCurrent();
+        choice=getch();
+        B1.move(choice);
+    }
     endwin();
 }
