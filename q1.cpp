@@ -187,6 +187,45 @@ class Board{
             return 0;
         }
 
+        void calculateDistance(){
+            int x1,x2,y1,y2;
+            Node* curr = head;
+            for(int i=0 ; i<size; i++){
+                curr=head;
+                for(int j=0 ; j<i; j++){
+                    curr=curr->down;
+                }
+                for(int j=0 ; j<size; j++){
+                    if(curr->ch=='P'){
+                        current=curr;
+                        x1=j;
+                        y1=i;
+                    }
+                    if(curr->ch=='k'){
+                        current=curr;
+                        x2=j;
+                        y2=i;
+                    }
+                    curr = curr->right;
+                }
+            }
+            int res,resx,resy;
+            if(x2>x1){
+                resx=x2-x1;
+            }
+            else{
+                resx=x1-x2;
+            }
+            if(y2>y1){
+                resy=y2-y1;
+            }
+            else{
+                resy=y1-y2;
+            }
+            res=resx+resy;
+            
+        }
+
         void display(){
             Node* curr = head;
             for(int i=0 ; i<=size+1; i++){
