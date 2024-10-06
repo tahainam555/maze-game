@@ -12,11 +12,41 @@ class Node{
         Node* down;
 };
 
+class my_stack{
+    Node* top;
+    public:
+        my_stack(){
+            top=NULL;
+        }
+        void push(char c){
+            Node* temp=new Node();
+            temp->ch=c;
+            temp->up=NULL;
+            temp->down=NULL;
+            temp->left=NULL;
+            temp->right=NULL;
+            temp->right=top;
+            top=temp;
+        }
+        char gettop(){
+            if(top!=NULL){
+                return top->ch;
+            }
+            return '\0';
+        }
+        void pop(){
+            Node* temp=top;
+            top=top->right;
+            delete temp;
+        }
+};
+
 class Board{
     private:
         int size;
         Node* head;
         Node* current;
+        my_stack S;
     public:
         Board(){
             head=NULL;
@@ -111,20 +141,50 @@ class Board{
             if(choice=='w'&&current->up!=NULL){
                 current->ch='-';
                 current=current->up;
+                S.push('u');
             }
             else if(choice=='s'&&current->down!=NULL){
                 current->ch='-';
                 current=current->down;
+                S.push('d');
             }
             else if(choice=='a'&&current->left!=NULL){
                 current->ch='-';
                 current=current->left;
+                S.push('l');
             }
             else if(choice=='d'&&current->right!=NULL){
                 current->ch='-';
                 current=current->right;
+                S.push('r');
             }
             current->ch='P';
+        }
+
+        int undo(){
+            char back=S.gettop();
+            if(back!='\0'){
+                if(back=='u'){
+                    current->ch='-';
+                    current=current->down;
+                }
+                else if(back=='d'){
+                    current->ch='-';
+                    current=current->up;
+                }
+                else if(back=='l'){
+                    current->ch='-';
+                    current=current->right;
+                }
+                else if(back=='r'){
+                    current->ch='-';
+                    current=current->left;
+                }
+                current->ch='P';
+                S.pop();
+                return 1;
+            }
+            return 0;
         }
 
         void display(){
@@ -162,13 +222,22 @@ int main(){
     Board B1;
     B1.setBoard(9);
     char choice='m';
+    int choice2=1;
     while(choice!='e')
     {
-        B1.display();
-        refresh();
-        B1.setCurrent();
+        if(choice2==1){
+            B1.display();
+            refresh();
+            B1.setCurrent();
+        }
         choice=getch();
-        B1.move(choice);
+        if(choice=='q'){
+            choice2=B1.undo();
+        }
+        else{
+            B1.move(choice);
+            choice2=1;
+        }
     }
     endwin();
 }
