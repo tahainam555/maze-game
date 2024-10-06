@@ -3,6 +3,21 @@
 #include<ctime>
 using namespace std;
 
+string to_string1(int num){
+    string result="";
+    while(num>0){
+        result+=(num%10)+'0';
+        num/=10;
+    }
+    cout << result.length() << endl;
+    for(int i=0,j=result.length()-1;i<=j;i++,j--){
+        char temp=result[i];
+        result[i]=result[j];
+        result[j]=temp;
+    }
+    return result;
+}
+
 class Node{
     public:
         char ch;
@@ -221,7 +236,7 @@ class Board{
                 resy=y1-y2;
             }
             res1=resx+resy;
-            Node* curr = head;
+            curr = head;
             for(int i=0 ; i<size; i++){
                 curr=head;
                 for(int j=0 ; j<i; j++){
@@ -249,6 +264,13 @@ class Board{
             }
             res2=resx+resy;
             res=res1+res2;
+            string result=to_string1(res);
+            char result2[result.length()+1];
+            for(int i=0 ; i<result.length();i++){
+                result2[i]=result[i];
+            }
+            result2[result.length()]='\0';
+            mvprintw(11,0,result2);
         }
 
         void display(){
@@ -263,10 +285,10 @@ class Board{
                     curr=curr->down;
                 }
                 for(int j=0 ; j<size; j++){
-                    if(curr->ch=='k'||curr->ch=='d'){
+/*                    if(curr->ch=='k'||curr->ch=='d'){
                         mvprintw(i+1,(j+1)*2,"-");
                     }
-                    else{
+*/                    {
                         mvprintw(i+1,(j+1)*2,"%c",curr->ch);
                     }
                     curr = curr->right;
@@ -287,6 +309,7 @@ int main(){
     B1.setBoard(9);
     char choice='m';
     int choice2=1;
+    B1.calculateDistance();
     while(choice!='e')
     {
         if(choice2==1){
