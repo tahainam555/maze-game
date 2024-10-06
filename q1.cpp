@@ -59,6 +59,7 @@ class my_stack{
 class Board{
     private:
         int size;
+        int moves;
         Node* head;
         Node* current;
         my_stack S;
@@ -67,6 +68,7 @@ class Board{
             head=NULL;
             current=head;
             size=0;
+            moves=0;
         }
 
         void setBoard(int s){
@@ -202,7 +204,7 @@ class Board{
             return 0;
         }
 
-        void calculateDistance(){
+        int calculate(char ch1, char ch2){
             int x1,x2,y1,y2;
             Node* curr = head;
             for(int i=0 ; i<size; i++){
@@ -211,18 +213,18 @@ class Board{
                     curr=curr->down;
                 }
                 for(int j=0 ; j<size; j++){
-                    if(curr->ch=='P'){
+                    if(curr->ch==ch1){
                         x1=j;
                         y1=i;
                     }
-                    if(curr->ch=='k'){
+                    if(curr->ch==ch2){
                         x2=j;
                         y2=i;
                     }
                     curr = curr->right;
                 }
             }
-            int res,res1,res2,resx,resy;
+            int res,resx,resy;
             if(x2>x1){
                 resx=x2-x1;
             }
@@ -235,35 +237,15 @@ class Board{
             else{
                 resy=y1-y2;
             }
-            res1=resx+resy;
-            curr = head;
-            for(int i=0 ; i<size; i++){
-                curr=head;
-                for(int j=0 ; j<i; j++){
-                    curr=curr->down;
-                }
-                for(int j=0 ; j<size; j++){
-                    if(curr->ch=='d'){
-                        x1=j;
-                        y1=i;
-                    }
-                    curr = curr->right;
-                }
-            }
-            if(x2>x1){
-                resx=x2-x1;
-            }
-            else{
-                resx=x1-x2;
-            }
-            if(y2>y1){
-                resy=y2-y1;
-            }
-            else{
-                resy=y1-y2;
-            }
-            res2=resx+resy;
-            res=res1+res2;
+            res=resx+resy;
+            return res;
+        }
+
+        void calculateDistance(){
+            int res1=calculate('P','k');
+            int res2=calculate('k','d');
+            int res=res1+res2;
+            moves=res;
             string result=to_string1(res);
             char result2[result.length()+1];
             for(int i=0 ; i<result.length();i++){
