@@ -255,29 +255,36 @@ class Board{
         }
 
         void display(){
+            mvprintw(0,6,"MODE: EASY");
+            mvprintw(2,0,"REMAINING MOVES: ");
+            mvprintw(3,0,"REMAINING UNDOS: ");
+            mvprintw(5,0,"SCORE: ");
+            mvprintw(6,0,"KEY STATUS: ");
+            mvprintw(8,4,"HINT: ");
+            
             Node* curr = head;
             for(int i=0 ; i<=size+1; i++){
-                mvprintw(0,i*2,"#");
+                mvprintw(10,i*2,"#");
             }
             for(int i=0 ; i<size; i++){
-                mvprintw(i+1,0,"#");
+                mvprintw(i+11,0,"#");
                 curr=head;
                 for(int j=0 ; j<i; j++){
                     curr=curr->down;
                 }
                 for(int j=0 ; j<size; j++){
                     if(curr->ch=='k'||curr->ch=='d'){
-                        mvprintw(i+1,(j+1)*2,"-");
+                        mvprintw(i+11,(j+1)*2,"-");
                     }
                     {
-                        mvprintw(i+1,(j+1)*2,"%c",curr->ch);
+                        mvprintw(i+11,(j+1)*2,"%c",curr->ch);
                     }
                     curr = curr->right;
                 }
-                mvprintw(i+1,(size+1)*2,"#");
+                mvprintw(i+11,(size+1)*2,"#");
             }
             for(int i=0 ; i<=size+1; i++){
-                mvprintw(size+1,i*2,"#");
+                mvprintw(size+11,i*2,"#");
             }
         }
 };
