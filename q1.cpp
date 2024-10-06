@@ -251,7 +251,7 @@ class Board{
                 result2[i]=result[i];
             }
             result2[result.length()]='\0';
-            mvprintw(11,0,result2);
+//            mvprintw(11,0,result2);
         }
 
         void display(){
@@ -290,6 +290,12 @@ class Board{
 };
 
 int main(){
+    char mode;
+    cout << "==============SELECT MODE==================\n";
+    cout << "  For Easy press:    e\n";
+    cout << " For Medium press:   m\n";
+    cout << "For Difficult press: d\n";
+    cin >> mode;
     initscr();
     curs_set(0);
     Board B1;
