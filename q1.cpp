@@ -9,7 +9,6 @@ string to_string1(int num){
         result+=(num%10)+'0';
         num/=10;
     }
-    cout << result.length() << endl;
     for(int i=0,j=result.length()-1;i<=j;i++,j--){
         char temp=result[i];
         result[i]=result[j];
@@ -267,16 +266,15 @@ class Board{
                     curr=curr->down;
                 }
                 for(int j=0 ; j<size; j++){
-/*                    if(curr->ch=='k'||curr->ch=='d'){
+                    if(curr->ch=='k'||curr->ch=='d'){
                         mvprintw(i+1,(j+1)*2,"-");
                     }
-*/                    {
+                    {
                         mvprintw(i+1,(j+1)*2,"%c",curr->ch);
                     }
                     curr = curr->right;
                 }
                 mvprintw(i+1,(size+1)*2,"#");
-                cout << endl;
             }
             for(int i=0 ; i<=size+1; i++){
                 mvprintw(size+1,i*2,"#");
