@@ -247,6 +247,9 @@ class Board{
             if(current->ch=='c'){
                 score++;
             }
+            if(current->ch=='k'){
+                key=true;
+            }
             current->ch='P';
         }
 
@@ -332,7 +335,7 @@ class Board{
             if(mode=='e'){
                 mvprintw(0,6,"MODE: EASY");
                 mvprintw(2,0,"REMAINING MOVES: ");
-                string moves1=to_string(moves);    
+                string moves1=to_string(moves);   
                 mvprintw(2,17,moves1.c_str());
                 mvprintw(3,0,"REMAINING UNDOS: ");
                 string undos1=to_string(undos);
@@ -341,7 +344,7 @@ class Board{
             else if(mode=='m'){
                 mvprintw(0,6,"MODE: MEDIUM");
                 mvprintw(2,0,"REMAINING MOVES: ");
-                string moves1=to_string(moves);
+                string moves1=to_string(moves);  
                 mvprintw(2,17,moves1.c_str());
                 mvprintw(3,0,"REMAINING UNDOS: ");
                 string undos1=to_string(undos);
@@ -350,7 +353,7 @@ class Board{
             else if(mode=='d'){    
                 mvprintw(0,6,"MODE: HARD");
                 mvprintw(2,0,"REMAINING MOVES: ");
-                string moves1=to_string(moves);
+                string moves1=to_string(moves);  
                 mvprintw(2,17,moves1.c_str());
                 mvprintw(3,0,"REMAINING UNDOS: ");
                 string undos1=to_string(undos);
@@ -411,6 +414,7 @@ int main(){
     while(choice!='e')
     {
         if(choice2==1){
+            clear();
             B1.display(mode);
             refresh();
             B1.setCurrent();
