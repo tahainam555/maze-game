@@ -58,21 +58,37 @@ class my_stack{
 class Board{
     private:
         int size;
+        int undos;
         int moves;
+        int score;
+        bool key;
         Node* head;
         Node* current;
         my_stack S;
     public:
-        Board(){
+        Board(char mode){
             head=NULL;
             current=head;
-            size=0;
-            moves=0;
+            score=0;
+            if(mode=='e'){
+                size=10;
+                moves=6;
+                undos=6;
+            }
+            else if(mode=='m'){
+                size=15;
+                moves=2;
+                undos=4;
+            }
+            else if(mode=='d'){
+                size=20;
+                moves=0;
+                undos=1;
+            }
         }
 
-        void setBoard(int s){
+        void setBoard(){
             srand(time(0));
-            size=s;
             Node* my_board[size][size];
             for(int i=0 ; i<size; i++){
                 for(int j=0 ; j<size; j++){
@@ -153,33 +169,41 @@ class Board{
                 }
             }
         }
+
         void move(char choice){
             if(choice=='w'&&current->up!=NULL){
                 current->ch='-';
                 current=current->up;
                 S.push('u');
+                moves--;
             }
             else if(choice=='s'&&current->down!=NULL){
                 current->ch='-';
                 current=current->down;
                 S.push('d');
+                moves--;
             }
             else if(choice=='a'&&current->left!=NULL){
                 current->ch='-';
                 current=current->left;
                 S.push('l');
+                moves--;
             }
             else if(choice=='d'&&current->right!=NULL){
                 current->ch='-';
                 current=current->right;
                 S.push('r');
+                moves--;
+            }
+            if(current->ch=='c'){
+                score++;
             }
             current->ch='P';
         }
 
         int undo(){
             char back=S.gettop();
-            if(back!='\0'){
+            if(back!='\0'&&undos>0){
                 if(back=='u'){
                     current->ch='-';
                     current=current->down;
@@ -198,6 +222,7 @@ class Board{
                 }
                 current->ch='P';
                 S.pop();
+                undos--;
                 return 1;
             }
             return 0;
@@ -244,8 +269,8 @@ class Board{
             int res1=calculate('P','k');
             int res2=calculate('k','d');
             int res=res1+res2;
-            moves=res;
-            string result=to_string1(res);
+            moves+=res;
+            string result=to_string(res);
             char result2[result.length()+1];
             for(int i=0 ; i<result.length();i++){
                 result2[i]=result[i];
@@ -254,14 +279,45 @@ class Board{
 //            mvprintw(11,0,result2);
         }
 
-        void display(){
-            mvprintw(0,6,"MODE: EASY");
-            mvprintw(2,0,"REMAINING MOVES: ");
-            mvprintw(3,0,"REMAINING UNDOS: ");
+        void display(char mode){
+            if(mode=='e'){
+                mvprintw(0,6,"MODE: EASY");
+                mvprintw(2,0,"REMAINING MOVES: ");
+                string moves1=to_string(moves);    
+                mvprintw(2,17,moves1.c_str());
+                mvprintw(3,0,"REMAINING UNDOS: ");
+                string undos1=to_string(undos);
+                mvprintw(3,17,undos1.c_str());
+            }
+            else if(mode=='m'){
+                mvprintw(0,6,"MODE: MEDIUM");
+                mvprintw(2,0,"REMAINING MOVES: ");
+                string moves1=to_string(moves);
+                mvprintw(2,17,moves1.c_str());
+                mvprintw(3,0,"REMAINING UNDOS: ");
+                string undos1=to_string(undos);
+                mvprintw(3,17,undos1.c_str());
+            }
+            else if(mode=='d'){    
+                mvprintw(0,6,"MODE: HARD");
+                mvprintw(2,0,"REMAINING MOVES: ");
+                string moves1=to_string(moves);
+                mvprintw(2,17,moves1.c_str());
+                mvprintw(3,0,"REMAINING UNDOS: ");
+                string undos1=to_string(undos);
+                mvprintw(3,17,undos1.c_str());
+            }
             mvprintw(5,0,"SCORE: ");
+            string score1=to_string(score);
+            mvprintw(5,7,score1.c_str());
             mvprintw(6,0,"KEY STATUS: ");
+            if(key){
+                mvprintw(6,12,"FOUND");
+            }
+            else{
+                mvprintw(6,12,"NOT FOUND");
+            }
             mvprintw(8,4,"HINT: ");
-            
             Node* curr = head;
             for(int i=0 ; i<=size+1; i++){
                 mvprintw(10,i*2,"#");
@@ -298,15 +354,15 @@ int main(){
     cin >> mode;
     initscr();
     curs_set(0);
-    Board B1;
-    B1.setBoard(9);
+    Board B1(mode);
+    B1.setBoard();
+    B1.calculateDistance();
     char choice='m';
     int choice2=1;
-    B1.calculateDistance();
     while(choice!='e')
     {
         if(choice2==1){
-            B1.display();
+            B1.display(mode);
             refresh();
             B1.setCurrent();
         }
