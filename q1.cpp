@@ -224,25 +224,25 @@ class Board{
         }
 
         void move(char choice){
-            if(choice=='w'&&current->up!=NULL){
+            if(choice=='w'&&current->up!=NULL&&S.gettop()!='d'){
                 current->ch='-';
                 current=current->up;
                 S.push('u');
                 moves--;
             }
-            else if(choice=='s'&&current->down!=NULL){
+            else if(choice=='s'&&current->down!=NULL&&S.gettop()!='u'){
                 current->ch='-';
                 current=current->down;
                 S.push('d');
                 moves--;
             }
-            else if(choice=='a'&&current->left!=NULL){
+            else if(choice=='a'&&current->left!=NULL&&S.gettop()!='r'){
                 current->ch='-';
                 current=current->left;
                 S.push('l');
                 moves--;
             }
-            else if(choice=='d'&&current->right!=NULL){
+            else if(choice=='d'&&current->right!=NULL&&S.gettop()!='l'){
                 current->ch='-';
                 current=current->right;
                 S.push('r');
