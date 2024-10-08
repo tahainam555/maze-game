@@ -62,6 +62,8 @@ class Board{
         int moves;
         int score;
         bool key;
+        int hint;
+        bool over;
         Node* head;
         Node* current;
         my_stack S;
@@ -70,6 +72,8 @@ class Board{
             head=NULL;
             current=head;
             score=0;
+            hint=2;
+            over=false;
             if(mode=='e'){
                 size=10;
                 moves=6;
@@ -331,6 +335,22 @@ class Board{
 //            mvprintw(11,0,result2);
         }
 
+        void setHint(int a, int b){
+            if(a>b){
+                hint=1;
+            }
+            else if(a==b){
+                hint=2;
+            }
+            else{
+                hint=0;
+            }
+        }
+
+        bool getKey(){
+            return key;
+        }
+
         void display(char mode){
             if(mode=='e'){
                 mvprintw(0,6,"MODE: EASY");
@@ -369,7 +389,15 @@ class Board{
             else{
                 mvprintw(6,12,"NOT FOUND");
             }
-            mvprintw(8,4,"HINT: ");
+            if(hint==1){
+                mvprintw(8,4,"HINT: MOVING CLOSER\n");
+            }
+            else if(hint==2){
+                mvprintw(8,4,"HINT: \n");
+            }
+            else{
+                mvprintw(8,4,"HINT: MOVING AWAY\n");
+            }
             Node* curr = head;
             for(int i=0 ; i<=size+1; i++){
                 mvprintw(10,i*2,"#");
@@ -424,7 +452,21 @@ int main(){
             choice2=B1.undo();
         }
         else{
+            int num1, num2;
+            if(!B1.getKey()){
+                num1=B1.calculate('P','k');
+            }
+            else{
+                num1=B1.calculate('P','d');
+            }
             B1.move(choice);
+            if(!B1.getKey()){
+                num2=B1.calculate('P','k');
+            }
+            else{
+                num2=B1.calculate('P','d');
+            }
+            B1.setHint(num1,num2);
             choice2=1;
         }
     }
