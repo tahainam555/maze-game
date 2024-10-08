@@ -254,6 +254,9 @@ class Board{
             if(current->ch=='k'){
                 key=true;
             }
+            if(current->ch=='B'){
+                over=true;
+            }
             current->ch='P';
         }
 
@@ -351,76 +354,87 @@ class Board{
             return key;
         }
 
+        void gameOver(){
+            if(moves==0){
+                over=true;
+            }
+        }
+
         void display(char mode){
-            if(mode=='e'){
-                mvprintw(0,6,"MODE: EASY");
-                mvprintw(2,0,"REMAINING MOVES: ");
-                string moves1=to_string(moves);   
-                mvprintw(2,17,moves1.c_str());
-                mvprintw(3,0,"REMAINING UNDOS: ");
-                string undos1=to_string(undos);
-                mvprintw(3,17,undos1.c_str());
-            }
-            else if(mode=='m'){
-                mvprintw(0,6,"MODE: MEDIUM");
-                mvprintw(2,0,"REMAINING MOVES: ");
-                string moves1=to_string(moves);  
-                mvprintw(2,17,moves1.c_str());
-                mvprintw(3,0,"REMAINING UNDOS: ");
-                string undos1=to_string(undos);
-                mvprintw(3,17,undos1.c_str());
-            }
-            else if(mode=='d'){    
-                mvprintw(0,6,"MODE: HARD");
-                mvprintw(2,0,"REMAINING MOVES: ");
-                string moves1=to_string(moves);  
-                mvprintw(2,17,moves1.c_str());
-                mvprintw(3,0,"REMAINING UNDOS: ");
-                string undos1=to_string(undos);
-                mvprintw(3,17,undos1.c_str());
-            }
-            mvprintw(5,0,"SCORE: ");
-            string score1=to_string(score);
-            mvprintw(5,7,score1.c_str());
-            mvprintw(6,0,"KEY STATUS: ");
-            if(key){
-                mvprintw(6,12,"FOUND");
+            if(!over){
+                if(mode=='e'){
+                    mvprintw(0,6,"MODE: EASY");
+                    mvprintw(2,0,"REMAINING MOVES: ");
+                    string moves1=to_string(moves);   
+                    mvprintw(2,17,moves1.c_str());
+                    mvprintw(3,0,"REMAINING UNDOS: ");
+                    string undos1=to_string(undos);
+                    mvprintw(3,17,undos1.c_str());
+                }
+                else if(mode=='m'){
+                    mvprintw(0,6,"MODE: MEDIUM");
+                    mvprintw(2,0,"REMAINING MOVES: ");
+                    string moves1=to_string(moves);  
+                    mvprintw(2,17,moves1.c_str());
+                    mvprintw(3,0,"REMAINING UNDOS: ");
+                    string undos1=to_string(undos);
+                    mvprintw(3,17,undos1.c_str());
+                }
+                else if(mode=='d'){    
+                    mvprintw(0,6,"MODE: HARD");
+                    mvprintw(2,0,"REMAINING MOVES: ");
+                    string moves1=to_string(moves);  
+                    mvprintw(2,17,moves1.c_str());
+                    mvprintw(3,0,"REMAINING UNDOS: ");
+                    string undos1=to_string(undos);
+                    mvprintw(3,17,undos1.c_str());
+                }
+                mvprintw(5,0,"SCORE: ");
+                string score1=to_string(score);
+                mvprintw(5,7,score1.c_str());
+                mvprintw(6,0,"KEY STATUS: ");
+                if(key){
+                    mvprintw(6,12,"FOUND");
+                }
+                else{
+                    mvprintw(6,12,"NOT FOUND");
+                }
+                if(hint==1){
+                    mvprintw(8,4,"HINT: MOVING CLOSER\n");
+                }
+                else if(hint==2){
+                    mvprintw(8,4,"HINT: \n");
+                }
+                else{
+                    mvprintw(8,4,"HINT: MOVING AWAY\n");
+                }
+                Node* curr = head;
+                for(int i=0 ; i<=size+1; i++){
+                    mvprintw(10,i*2,"#");
+                }
+                for(int i=0 ; i<size; i++){
+                    mvprintw(i+11,0,"#");
+                    curr=head;
+                    for(int j=0 ; j<i; j++){
+                        curr=curr->down;
+                    }
+                    for(int j=0 ; j<size; j++){
+                        if(curr->ch=='k'||curr->ch=='d'){
+                            mvprintw(i+11,(j+1)*2,"-");
+                        }
+                        {
+                            mvprintw(i+11,(j+1)*2,"%c",curr->ch);
+                        }
+                        curr = curr->right;
+                    }
+                    mvprintw(i+11,(size+1)*2,"#");
+                }
+                for(int i=0 ; i<=size+1; i++){
+                    mvprintw(size+11,i*2,"#");
+                }
             }
             else{
-                mvprintw(6,12,"NOT FOUND");
-            }
-            if(hint==1){
-                mvprintw(8,4,"HINT: MOVING CLOSER\n");
-            }
-            else if(hint==2){
-                mvprintw(8,4,"HINT: \n");
-            }
-            else{
-                mvprintw(8,4,"HINT: MOVING AWAY\n");
-            }
-            Node* curr = head;
-            for(int i=0 ; i<=size+1; i++){
-                mvprintw(10,i*2,"#");
-            }
-            for(int i=0 ; i<size; i++){
-                mvprintw(i+11,0,"#");
-                curr=head;
-                for(int j=0 ; j<i; j++){
-                    curr=curr->down;
-                }
-                for(int j=0 ; j<size; j++){
-                    if(curr->ch=='k'||curr->ch=='d'){
-                        mvprintw(i+11,(j+1)*2,"-");
-                    }
-                    {
-                        mvprintw(i+11,(j+1)*2,"%c",curr->ch);
-                    }
-                    curr = curr->right;
-                }
-                mvprintw(i+11,(size+1)*2,"#");
-            }
-            for(int i=0 ; i<=size+1; i++){
-                mvprintw(size+11,i*2,"#");
+                mvprintw(8,4,"GAME OVER");
             }
         }
 };
@@ -443,6 +457,7 @@ int main(){
     {
         if(choice2==1){
             clear();
+            B1.gameOver();
             B1.display(mode);
             refresh();
             B1.setCurrent();
