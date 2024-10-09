@@ -499,6 +499,7 @@ int main(){
     cout << "For Difficult press: d\n";
     cin >> mode;
     initscr();
+    noecho();
     curs_set(0);
     Board B1(mode);
     B1.setBoard();
