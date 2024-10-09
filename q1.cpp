@@ -20,37 +20,41 @@ string to_string1(int num){
 class Node{
     public:
         char ch;
+        int row, col;
         Node* right;
         Node* left;
         Node* up;
         Node* down;
 };
 
+class Node1{
+    public:
+        char chh;
+        int x,y;
+        Node1* bottom;
+};
+
 class my_stack{
-    Node* top;
+    Node1* top;
     public:
         my_stack(){
             top=NULL;
         }
         void push(char c){
-            Node* temp=new Node();
-            temp->ch=c;
-            temp->up=NULL;
-            temp->down=NULL;
-            temp->left=NULL;
-            temp->right=NULL;
-            temp->right=top;
+            Node1* temp=new Node1();
+            temp->chh=c;
+            temp->bottom=NULL;
             top=temp;
         }
         char gettop(){
             if(top!=NULL){
-                return top->ch;
+                return top->chh;
             }
             return '\0';
         }
         void pop(){
-            Node* temp=top;
-            top=top->right;
+            Node1* temp=top;
+            top=top->bottom;
             delete temp;
         }
 };
@@ -67,6 +71,7 @@ class Board{
         Node* head;
         Node* current;
         my_stack S;
+        my_stack coin_stack;
     public:
         Board(char mode){
             head=NULL;
@@ -106,6 +111,8 @@ class Board{
                     temp->down=NULL;
                     temp->up=NULL;
                     temp->ch='-';
+                    temp->row=i;
+                    temp->col=j;
                     if(head==NULL){
                         head = temp;
                         curr1 = head;
@@ -249,7 +256,10 @@ class Board{
                 moves--;
             }
             if(current->ch=='c'){
-                score++;
+                score+=2;
+                undos++;
+                coin_stack.push(current->col);
+                coin_stack.push(current->row);
             }
             if(current->ch=='k'){
                 key=true;
