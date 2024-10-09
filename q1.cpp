@@ -474,7 +474,8 @@ class Board{
                 }
             }
             else{
-                int n=0;
+                mvprintw(1,10,"GAME OVER!");
+                int n=5;
                 while(S2.gettop()!=-1){
                     mvprintw(n,8,"COIN COLLECTED AT: ");
                     string str1=to_string(S2.gettop());
