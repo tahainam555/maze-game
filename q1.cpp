@@ -17,6 +17,39 @@ string to_string1(int num){
     return result;
 }
 
+class Node2{
+    public:
+        int x;
+        Node2* next;
+};
+
+class coin_stack{
+    Node2* top;
+    public:
+        coin_stack(){
+            top=NULL;
+        }
+        void push(int c){
+            Node2* temp=new Node2();
+            temp->x=c;
+            temp->next=top;
+            top=temp;
+        }
+        char gettop(){
+            if(top!=NULL){
+                return top->x;
+            }
+            return -1;
+        }
+        void pop(){
+            if(top!=NULL){
+                Node2* temp=top;
+                top=top->next;
+                delete temp;
+            }
+        }
+};
+
 class Node{
     public:
         char ch;
@@ -27,34 +60,31 @@ class Node{
         Node* down;
 };
 
-class Node1{
-    public:
-        char chh;
-        int x,y;
-        Node1* bottom;
-};
-
 class my_stack{
-    Node1* top;
+    Node* top;
     public:
         my_stack(){
             top=NULL;
         }
         void push(char c){
-            Node1* temp=new Node1();
-            temp->chh=c;
-            temp->bottom=NULL;
+            Node* temp=new Node();
+            temp->ch=c;
+            temp->up=NULL;
+            temp->down=NULL;
+            temp->left=NULL;
+            temp->right=NULL;
+            temp->right=top;
             top=temp;
         }
         char gettop(){
             if(top!=NULL){
-                return top->chh;
+                return top->ch;
             }
             return '\0';
         }
         void pop(){
-            Node1* temp=top;
-            top=top->bottom;
+            Node* temp=top;
+            top=top->right;
             delete temp;
         }
 };
@@ -71,7 +101,7 @@ class Board{
         Node* head;
         Node* current;
         my_stack S;
-        my_stack coin_stack;
+        coin_stack S2;
     public:
         Board(char mode){
             head=NULL;
@@ -258,8 +288,8 @@ class Board{
             if(current->ch=='c'){
                 score+=2;
                 undos++;
-                coin_stack.push(current->col);
-                coin_stack.push(current->row);
+                S2.push(current->col);
+                S2.push(current->row);
             }
             if(current->ch=='k'){
                 key=true;
@@ -444,7 +474,18 @@ class Board{
                 }
             }
             else{
-                mvprintw(8,4,"GAME OVER");
+                int n=0;
+                while(S2.gettop()!=-1){
+                    mvprintw(n,8,"COIN COLLECTED AT: ");
+                    string str1=to_string(S2.gettop());
+                    S2.pop();
+                    mvprintw(n,27,str1.c_str());
+                    mvprintw(n,29,",");
+                    string str2=to_string(S2.gettop());
+                    S2.pop();
+                    mvprintw(n,30,str2.c_str());
+                    n++;
+                }
             }
         }
 };
