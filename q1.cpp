@@ -170,11 +170,24 @@ class Board{
             }
         }
 
-        void setBoard(){
+        void setcoins(){
             srand(time(0));
-            my_board();
+            
             Node* curr = head;
-            for(int i=0 ; i<6; i++){
+            for(int i=0 ; i<size; i++){
+                curr=head;
+                for(int j=0 ; j<i; j++){
+                    curr=curr->down;
+                }
+                for(int j=0 ; j<size; j++){
+                    if(curr->ch=='c'){
+                        curr->ch='-';
+                    }
+                    curr = curr->right;
+                }
+            }        
+            curr = head;
+            for(int i=0 ; i<3; i++){
                 curr=head;
                 int num1=rand()%size;
                 int num2=rand()%size;
@@ -184,12 +197,30 @@ class Board{
                 for(int j=0 ; j<num2 ; j++){
                     curr=curr->down;
                 }
-                if(i%2==0)
-                    curr->ch='B';
-                else
+                if(curr->ch=='-')
                     curr->ch='c';
+                else
+                    i--;
             }
-    
+        }
+
+        void setBoard(){
+            srand(time(0));
+            my_board();
+            Node* curr = head;
+            for(int i=0 ; i<3; i++){
+                curr=head;
+                int num1=rand()%size;
+                int num2=rand()%size;
+                for(int j=0 ; j<num1 ; j++){
+                    curr=curr->right;
+                }
+                for(int j=0 ; j<num2 ; j++){
+                    curr=curr->down;
+                }
+                curr->ch='B';
+            }
+            setcoins();
             int rand1, rand2;
             bool check=true;
             rand1=rand()%size;
@@ -462,7 +493,7 @@ class Board{
                         if(curr->ch=='k'||curr->ch=='d'){
                             mvprintw(i+11,(j+1)*2,"-");
                         }
-                        {
+                        else{
                             mvprintw(i+11,(j+1)*2,"%c",curr->ch);
                         }
                         curr = curr->right;
@@ -498,6 +529,7 @@ int main(){
     cout << " For Medium press:   m\n";
     cout << "For Difficult press: d\n";
     cin >> mode;
+    int nummoves=1;
     initscr();
     noecho();
     curs_set(0);
@@ -508,6 +540,9 @@ int main(){
     int choice2=1;
     while(choice!='e')
     {
+        if(nummoves%6==0){
+            B1.setcoins();
+        }
         if(choice2==1){
             clear();
             B1.gameOver();
@@ -528,6 +563,7 @@ int main(){
                 num1=B1.calculate('P','d');
             }
             B1.move(choice);
+            nummoves++;
             if(!B1.getKey()){
                 num2=B1.calculate('P','k');
             }
