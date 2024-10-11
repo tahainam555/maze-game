@@ -23,28 +23,37 @@ class Node2{
         Node2* next;
 };
 
-class coin_stack{
-    Node2* top;
+class coin_queue{
+    Node2* head;
+    Node2* tail;
     public:
-        coin_stack(){
-            top=NULL;
+        coin_queue(){
+            head=NULL;
+            tail=NULL;
         }
-        void push(int c){
+        void enqueue(int c){
             Node2* temp=new Node2();
             temp->x=c;
-            temp->next=top;
-            top=temp;
+            temp->next=NULL;
+            if(head==NULL){
+                head=temp;
+                tail=temp;
+            }
+            else{
+                tail->next=temp;
+                tail=temp;
+            }
         }
         char gettop(){
-            if(top!=NULL){
-                return top->x;
+            if(head!=NULL){
+                return head->x;
             }
             return -1;
         }
-        void pop(){
-            if(top!=NULL){
-                Node2* temp=top;
-                top=top->next;
+        void dequeue(){
+            if(head!=NULL){
+                Node2* temp=head;
+                head=head->next;
                 delete temp;
             }
         }
@@ -101,7 +110,7 @@ class Board{
         Node* head;
         Node* current;
         my_stack S;
-        coin_stack S2;
+        coin_queue S2;
     public:
         Board(char mode){
             head=NULL;
@@ -319,8 +328,8 @@ class Board{
             if(current->ch=='c'){
                 score+=2;
                 undos++;
-                S2.push(current->col);
-                S2.push(current->row);
+                S2.enqueue(current->row);
+                S2.enqueue(current->col);
             }
             if(current->ch=='k'){
                 key=true;
@@ -510,11 +519,11 @@ class Board{
                 while(S2.gettop()!=-1){
                     mvprintw(n,8,"COIN COLLECTED AT: ");
                     string str1=to_string(S2.gettop());
-                    S2.pop();
+                    S2.dequeue();
                     mvprintw(n,27,str1.c_str());
                     mvprintw(n,29,",");
                     string str2=to_string(S2.gettop());
-                    S2.pop();
+                    S2.dequeue();
                     mvprintw(n,30,str2.c_str());
                     n++;
                 }
