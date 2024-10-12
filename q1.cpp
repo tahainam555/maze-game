@@ -499,7 +499,7 @@ class Board{
                         curr=curr->down;
                     }
                     for(int j=0 ; j<size; j++){
-                        if(curr->ch=='k'||curr->ch=='d'){
+                        if(curr->ch=='k'||curr->ch=='d'||curr->ch=='B'){
                             mvprintw(i+11,(j+1)*2,"-");
                         }
                         else{
