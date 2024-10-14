@@ -22,7 +22,7 @@ through the darkness.
 To, start the game, run:
 ./1
 Or if you want to change something after changing compile again using:
-g++ -o 1 main.cpp
+g++ -o 1 main.cpp -lncurses
 Then run using:
 ./1
 

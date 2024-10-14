@@ -107,6 +107,7 @@ class Board{
         bool key;
         int hint;
         bool over;
+        bool win;
         Node* head;
         Node* current;
         my_stack S;
@@ -118,6 +119,7 @@ class Board{
             score=0;
             hint=2;
             over=false;
+            win=false;
             if(mode=='e'){
                 size=10;
                 moves=6;
@@ -337,6 +339,10 @@ class Board{
             if(current->ch=='B'){
                 over=true;
             }
+            if(key==true&&current->ch=='d'){
+                over=true;
+                win=true;
+            }
             current->ch='P';
         }
 
@@ -515,6 +521,12 @@ class Board{
             }
             else{
                 mvprintw(1,10,"GAME OVER!");
+                if(win==true){
+                    mvprintw(3,10,"YOU WON!!!");
+                }
+                else{
+                    mvprintw(3,10,"YOU LOST!!");
+                }
                 int n=5;
                 while(S2.gettop()!=-1){
                     mvprintw(n,8,"COIN COLLECTED AT: ");
