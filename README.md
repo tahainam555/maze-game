@@ -43,4 +43,4 @@ When the game runs remember the following things:
 
 
 ## CopyRight
-- Rights reserved.
+- Rights reserved © 2024, tahainam555
