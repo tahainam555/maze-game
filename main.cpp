@@ -106,14 +106,15 @@ class Board{
         int score;
         bool key;
         int hint;
-        bool over;
         bool win;
         int doorx, doory;
+        int keyx, keyy;
         Node* head;
         Node* current;
         my_stack S;
         coin_queue S2;
     public:
+        bool over;
         Board(char mode){
             head=NULL;
             current=head;
@@ -245,6 +246,8 @@ class Board{
                 curr=curr->down;
             }
             curr->ch='k';
+            keyx=curr->row;
+            keyy=curr->col;
             rand1=rand()%size;
             rand2=rand()%size;
             while(check){
@@ -259,7 +262,6 @@ class Board{
                     curr->ch='d';
                     doorx=curr->row;
                     doory=curr->col;
-                    cout << doorx << "  " << doory << endl;
                     check=false;
                 }
                 else{
@@ -518,12 +520,12 @@ class Board{
                         curr=curr->down;
                     }
                     for(int j=0 ; j<size; j++){
-                        if(curr->ch=='k'||curr->ch=='d'||curr->ch=='B'){
+//                        if(curr->ch=='k'||curr->ch=='d'||curr->ch=='B'){
                             mvprintw(i+11,(j+1)*2,"-");
-                        }
-                        else{
+//                        }
+//                        else{
                             mvprintw(i+11,(j+1)*2,"%c",curr->ch);
-                        }
+//                        }
                         curr = curr->right;
                     }
                     mvprintw(i+11,(size+1)*2,"#");
@@ -533,6 +535,20 @@ class Board{
                 }
             }
             else{
+                Node* curr = head;
+                for(int i=0 ; i<size; i++){
+                    curr=head;
+                    for(int j=0 ; j<i; j++){
+                        curr=curr->down;
+                    }
+                    for(int j=0 ; j<size; j++){
+                        if(curr->ch=='c'){
+                            curr->ch='-';
+                        }
+                        curr = curr->right;
+                    }
+                }
+
                 mvprintw(1,10,"GAME OVER!");
                 if(win==true){
                     mvprintw(3,10,"YOU WON!!!");
@@ -542,15 +558,52 @@ class Board{
                 }
                 int n=5;
                 while(S2.gettop()!=-1){
+                    curr=head;
                     mvprintw(n,8,"COIN COLLECTED AT: ");
                     string str1=to_string(S2.gettop());
+                    for(int i=0; i<S2.gettop(); i++){
+                        curr=curr->down;
+                    }
                     S2.dequeue();
                     mvprintw(n,27,str1.c_str());
                     mvprintw(n,29,",");
                     string str2=to_string(S2.gettop());
+                    for(int i=0; i<S2.gettop(); i++){
+                        curr=curr->right;
+                    }
                     S2.dequeue();
                     mvprintw(n,30,str2.c_str());
                     n++;
+                    curr->ch='c';
+                }
+
+                curr=head;
+                for(int i=0 ; i<keyx; i++){
+                    curr=curr->down;
+                }
+                for(int j=0 ; j<keyy; j++){
+                    curr=curr->right;
+                }
+                curr->ch='k';
+                
+                curr=head; 
+                for(int i=0 ; i<=size+1; i++){
+                    mvprintw(10,i*2,"#");
+                }
+                for(int i=0 ; i<size; i++){
+                    mvprintw(i+11,0,"#");
+                    curr=head;
+                    for(int j=0 ; j<i; j++){
+                        curr=curr->down;
+                    }
+                    for(int j=0 ; j<size; j++){
+                        mvprintw(i+11,(j+1)*2,"%c",curr->ch);
+                        curr = curr->right;
+                    }
+                    mvprintw(i+11,(size+1)*2,"#");
+                }
+                for(int i=0 ; i<=size+1; i++){
+                    mvprintw(size+11,i*2,"#");
                 }
             }
         }
@@ -572,7 +625,8 @@ int main(){
     B1.calculateDistance();
     char choice='m';
     int choice2=1;
-    while(choice!='e')
+    bool over=false;
+    while(!over)
     {
         if(nummoves%6==0){
             B1.setcoins();
@@ -583,6 +637,11 @@ int main(){
             B1.display(mode);
             refresh();
             B1.setCurrent();
+            if(B1.over){
+                getch();
+                over=true;
+                break;
+            }
         }
         choice=getch();
         if(choice=='q'){
@@ -606,7 +665,7 @@ int main(){
             }
             B1.setHint(num1,num2);
             choice2=1;
-        }
+        }  
     }
     endwin();
 }
