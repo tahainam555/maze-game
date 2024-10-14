@@ -108,6 +108,7 @@ class Board{
         int hint;
         bool over;
         bool win;
+        int doorx, doory;
         Node* head;
         Node* current;
         my_stack S;
@@ -256,6 +257,9 @@ class Board{
                 }
                 if(curr->ch=='-'){
                     curr->ch='d';
+                    doorx=curr->row;
+                    doory=curr->col;
+                    cout << doorx << "  " << doory << endl;
                     check=false;
                 }
                 else{
@@ -335,6 +339,14 @@ class Board{
             }
             if(current->ch=='k'){
                 key=true;
+                Node* curr=head;
+                for(int i=0 ; i<doorx; i++){
+                    curr=curr->down;
+                }
+                for(int j=0 ; j<doory; j++){
+                    curr=curr->right;
+                }
+                curr->ch='d';
             }
             if(current->ch=='B'){
                 over=true;
@@ -342,6 +354,7 @@ class Board{
             if(key==true&&current->ch=='d'){
                 over=true;
                 win=true;
+                score+=moves;
             }
             current->ch='P';
         }
@@ -505,12 +518,12 @@ class Board{
                         curr=curr->down;
                     }
                     for(int j=0 ; j<size; j++){
-                        if(curr->ch=='k'||curr->ch=='d'||curr->ch=='B'){
+//                        if(curr->ch=='k'||curr->ch=='d'||curr->ch=='B'){
                             mvprintw(i+11,(j+1)*2,"-");
-                        }
-                        else{
+//                        }
+//                        else{
                             mvprintw(i+11,(j+1)*2,"%c",curr->ch);
-                        }
+//                        }
                         curr = curr->right;
                     }
                     mvprintw(i+11,(size+1)*2,"#");
