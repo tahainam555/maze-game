@@ -1,3 +1,6 @@
+                                        //Muhammad Taha
+                                        //23i-2571
+                                        //AI-B
 #include<iostream>
 #include<curses.h>
 #include<ctime>
