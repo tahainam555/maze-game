@@ -23,11 +23,11 @@ class Node2{
         Node2* next;
 };
 
-class coin_queue{
+class my_queue{
     Node2* head;
     Node2* tail;
     public:
-        coin_queue(){
+        my_queue(){
             head=NULL;
             tail=NULL;
         }
@@ -104,15 +104,18 @@ class Board{
         int undos;
         int moves;
         int score;
-        bool key;
         int hint;
+        bool key;
         bool win;
+        bool check;
         int doorx, doory;
         int keyx, keyy;
+        int plyrx, plyry;
         Node* head;
         Node* current;
         my_stack S;
-        coin_queue S2;
+        my_queue Q1;
+        my_queue Q2;
     public:
         bool over;
         Board(char mode){
@@ -122,6 +125,7 @@ class Board{
             hint=2;
             over=false;
             win=false;
+            check=true;
             if(mode=='e'){
                 size=10;
                 moves=6;
@@ -210,11 +214,17 @@ class Board{
                 for(int j=0 ; j<num2 ; j++){
                     curr=curr->down;
                 }
-                if(curr->ch=='-')
+                if(curr->ch=='-'){
                     curr->ch='c';
+                    if(check){
+                        Q2.enqueue(curr->row);
+                        Q2.enqueue(curr->col);
+                    }
+                }
                 else
                     i--;
             }
+            check=false;
         }
 
         void setBoard(){
@@ -282,6 +292,8 @@ class Board{
                 }
                 if(curr->ch=='-'){
                     curr->ch='P';
+                    plyrx=curr->row;
+                    plyry=curr->col;
                     check=false;
                 }
                 else{
@@ -336,8 +348,8 @@ class Board{
             if(current->ch=='c'){
                 score+=2;
                 undos++;
-                S2.enqueue(current->row);
-                S2.enqueue(current->col);
+                Q1.enqueue(current->row);
+                Q1.enqueue(current->col);
             }
             if(current->ch=='k'){
                 key=true;
@@ -542,12 +554,21 @@ class Board{
                         curr=curr->down;
                     }
                     for(int j=0 ; j<size; j++){
-                        if(curr->ch=='c'){
+                        if(curr->ch=='c'||curr->ch=='P'){
                             curr->ch='-';
                         }
                         curr = curr->right;
                     }
                 }
+
+                curr=head;
+                for(int i=0 ; i<plyrx; i++){
+                    curr=curr->down;
+                }
+                for(int i=0 ; i<plyry; i++){
+                    curr=curr->right;
+                }
+                curr->ch='P';
 
                 mvprintw(1,10,"GAME OVER!");
                 if(win==true){
@@ -561,23 +582,28 @@ class Board{
                 mvprintw(3,33,score1.c_str());
                 
                 int n=5;
-                while(S2.gettop()!=-1){
-                    curr=head;
+                while(Q1.gettop()!=-1){
                     mvprintw(n,8,"COIN COLLECTED AT: ");
-                    string str1=to_string(S2.gettop());
-                    for(int i=0; i<S2.gettop(); i++){
-                        curr=curr->down;
-                    }
-                    S2.dequeue();
+                    string str1=to_string(Q1.gettop());
+                    Q1.dequeue();
                     mvprintw(n,27,str1.c_str());
                     mvprintw(n,29,",");
-                    string str2=to_string(S2.gettop());
-                    for(int i=0; i<S2.gettop(); i++){
-                        curr=curr->right;
-                    }
-                    S2.dequeue();
+                    string str2=to_string(Q1.gettop());
+                    Q1.dequeue();
                     mvprintw(n,30,str2.c_str());
                     n++;
+                }
+
+                while(Q2.gettop()!=-1){
+                    curr=head;
+                    for(int i=0; i<Q2.gettop(); i++){
+                        curr=curr->down;
+                    }
+                    Q2.dequeue();
+                    for(int i=0; i<Q2.gettop(); i++){
+                        curr=curr->right;
+                    }
+                    Q2.dequeue();
                     curr->ch='c';
                 }
 
