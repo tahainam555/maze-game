@@ -520,12 +520,12 @@ class Board{
                         curr=curr->down;
                     }
                     for(int j=0 ; j<size; j++){
-//                        if(curr->ch=='k'||curr->ch=='d'||curr->ch=='B'){
+                        if(curr->ch=='k'||curr->ch=='d'||curr->ch=='B'){
                             mvprintw(i+11,(j+1)*2,"-");
-//                        }
-//                        else{
+                        }
+                        else{
                             mvprintw(i+11,(j+1)*2,"%c",curr->ch);
-//                        }
+                        }
                         curr = curr->right;
                     }
                     mvprintw(i+11,(size+1)*2,"#");
@@ -556,6 +556,10 @@ class Board{
                 else{
                     mvprintw(3,10,"YOU LOST!!");
                 }
+                mvprintw(3,25,"SCORE: ");
+                string score1=to_string(score);
+                mvprintw(3,33,score1.c_str());
+                
                 int n=5;
                 while(S2.gettop()!=-1){
                     curr=head;
