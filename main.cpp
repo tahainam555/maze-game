@@ -465,12 +465,12 @@ class Board{
             int res2=calculate('k','d');
             int res=res1+res2;
             moves+=res;
-            string result=to_string(res);
-            char result2[result.length()+1];
-            for(int i=0 ; i<result.length();i++){
-                result2[i]=result[i];
-            }
-            result2[result.length()]='\0';
+//            string result=to_string(res);
+//            char result2[result.length()+1];
+//            for(int i=0 ; i<result.length();i++){
+//                result2[i]=result[i];
+//            }
+//            result2[result.length()]='\0';
 //            mvprintw(11,0,result2);
         }
 
@@ -501,32 +501,25 @@ class Board{
                 if(mode=='e'){
                     mvprintw(0,6,"MODE: EASY");
                     mvprintw(2,0,"REMAINING MOVES: ");
-                    string moves1=to_string(moves);   
                     mvprintw(2,17,"%d",moves);
                     mvprintw(3,0,"REMAINING UNDOS: ");
-                    string undos1=to_string(undos);
                     mvprintw(3,17,"%d",undos);
                 }
                 else if(mode=='m'){
                     mvprintw(0,6,"MODE: MEDIUM");
                     mvprintw(2,0,"REMAINING MOVES: ");
-                    string moves1=to_string(moves);  
                     mvprintw(2,17,"%d",moves);
                     mvprintw(3,0,"REMAINING UNDOS: ");
-                    string undos1=to_string(undos);
                     mvprintw(3,17,"%d",undos);
                 }
                 else if(mode=='d'){    
                     mvprintw(0,6,"MODE: HARD");
                     mvprintw(2,0,"REMAINING MOVES: ");
-                    string moves1=to_string(moves);  
                     mvprintw(2,17,"%d",moves);
                     mvprintw(3,0,"REMAINING UNDOS: ");
-                    string undos1=to_string(undos);
                     mvprintw(3,17,"%d",undos);
                 }
                 mvprintw(5,0,"SCORE: ");
-                string score1=to_string(score);
                 mvprintw(5,7,"%d",score);
                 mvprintw(6,0,"KEY STATUS: ");
                 if(key){
@@ -571,22 +564,22 @@ class Board{
                 if(current!=NULL){
                     if(current->up!=NULL){
                         if(current->up->ch=='B'){
-                            mvprintw(size+15, 8,"BOMB IN NEIGHBOUR!!");        
+                            mvprintw(35, 8,"BOMB IN NEIGHBOUR!!");        
                         }
                     }
                     if(current->down!=NULL){
                         if(current->down->ch=='B'){
-                            mvprintw(size+15, 8,"BOMB IN NEIGHBOUR!!");        
+                            mvprintw(35, 8,"BOMB IN NEIGHBOUR!!");        
                         }
                     }
                     if(current->left!=NULL){
                         if(current->left->ch=='B'){
-                            mvprintw(size+15, 8,"BOMB IN NEIGHBOUR!!");        
+                            mvprintw(35, 8,"BOMB IN NEIGHBOUR!!");        
                         }
                     }
                     if(current->right!=NULL){
                         if(current->right->ch=='B'){
-                            mvprintw(size+15, 8,"BOMB IN NEIGHBOUR!!");        
+                            mvprintw(35, 8,"BOMB IN NEIGHBOUR!!");        
                         }
                     }
                 }
@@ -623,17 +616,14 @@ class Board{
                     mvprintw(3,10,"YOU LOST!!");
                 }
                 mvprintw(3,25,"SCORE: ");
-                string score1=to_string(score);
                 mvprintw(3,33,"%d",score);
                 
                 int n=5;
                 while(Q1.gettop()!=-1){
                     mvprintw(n,25,"COIN COLLECTED AT: ");
-                    string str1=to_string(Q1.gettop());
                     mvprintw(n,44,"%d",Q1.gettop());
                     Q1.dequeue();
                     mvprintw(n,46,",");
-                    string str2=to_string(Q1.gettop());
                     mvprintw(n,48,"%d",Q1.gettop());
                     Q1.dequeue();
                     n++;
