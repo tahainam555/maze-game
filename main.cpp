@@ -502,32 +502,32 @@ class Board{
                     mvprintw(0,6,"MODE: EASY");
                     mvprintw(2,0,"REMAINING MOVES: ");
                     string moves1=to_string(moves);   
-                    mvprintw(2,17,moves1.c_str());
+                    mvprintw(2,17,"%d",moves);
                     mvprintw(3,0,"REMAINING UNDOS: ");
                     string undos1=to_string(undos);
-                    mvprintw(3,17,undos1.c_str());
+                    mvprintw(3,17,"%d",undos);
                 }
                 else if(mode=='m'){
                     mvprintw(0,6,"MODE: MEDIUM");
                     mvprintw(2,0,"REMAINING MOVES: ");
                     string moves1=to_string(moves);  
-                    mvprintw(2,17,moves1.c_str());
+                    mvprintw(2,17,"%d",moves);
                     mvprintw(3,0,"REMAINING UNDOS: ");
                     string undos1=to_string(undos);
-                    mvprintw(3,17,undos1.c_str());
+                    mvprintw(3,17,"%d",undos);
                 }
                 else if(mode=='d'){    
                     mvprintw(0,6,"MODE: HARD");
                     mvprintw(2,0,"REMAINING MOVES: ");
                     string moves1=to_string(moves);  
-                    mvprintw(2,17,moves1.c_str());
+                    mvprintw(2,17,"%d",moves);
                     mvprintw(3,0,"REMAINING UNDOS: ");
                     string undos1=to_string(undos);
-                    mvprintw(3,17,undos1.c_str());
+                    mvprintw(3,17,"%d",undos);
                 }
                 mvprintw(5,0,"SCORE: ");
                 string score1=to_string(score);
-                mvprintw(5,7,score1.c_str());
+                mvprintw(5,7,"%d",score);
                 mvprintw(6,0,"KEY STATUS: ");
                 if(key){
                     mvprintw(6,12,"FOUND");
@@ -624,18 +624,18 @@ class Board{
                 }
                 mvprintw(3,25,"SCORE: ");
                 string score1=to_string(score);
-                mvprintw(3,33,score1.c_str());
+                mvprintw(3,33,"%d",score);
                 
                 int n=5;
                 while(Q1.gettop()!=-1){
                     mvprintw(n,25,"COIN COLLECTED AT: ");
                     string str1=to_string(Q1.gettop());
+                    mvprintw(n,44,"%d",Q1.gettop());
                     Q1.dequeue();
-                    mvprintw(n,44,str1.c_str());
                     mvprintw(n,46,",");
                     string str2=to_string(Q1.gettop());
+                    mvprintw(n,48,"%d",Q1.gettop());
                     Q1.dequeue();
-                    mvprintw(n,48,str2.c_str());
                     n++;
                 }
 
@@ -660,6 +660,15 @@ class Board{
                     curr=curr->right;
                 }
                 curr->ch='k';
+
+                curr=head;
+                for(int i=0 ; i<doorx; i++){
+                    curr=curr->down;
+                }
+                for(int j=0 ; j<doory; j++){
+                    curr=curr->right;
+                }
+                curr->ch='d';
                 
                 curr=head; 
                 for(int i=0 ; i<=size+1; i++){
@@ -685,16 +694,19 @@ class Board{
 };
 
 int main(){
-    char mode;
-    cout << "==============SELECT MODE==================\n";
-    cout << "  For Easy press:    e\n";
-    cout << " For Medium press:   m\n";
-    cout << "For Difficult press: d\n";
-    cin >> mode;
-    int nummoves=1;
     initscr();
     noecho();
     curs_set(0);
+    char mode;
+    mvprintw(0,10,"WELCOME TO THE GAME");
+    mvprintw(2,10,"SELECT MODE: ");
+    mvprintw(4,10,"e for Easy");
+    mvprintw(6,10,"m for Medium");
+    mvprintw(8,10,"d for Difficult");
+    mode=getch();
+    refresh();
+    int nummoves=1;
+    clear();
     Board B1(mode);
     B1.setBoard();
     B1.calculateDistance();
