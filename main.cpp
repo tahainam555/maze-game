@@ -325,28 +325,48 @@ class Board{
 
         void move(char choice){
             if(choice=='w'&&current->up!=NULL&&S.gettop()!='d'){
-                current->ch='-';
-                current=current->up;
-                S.push('u');
-                moves--;
+                if(current->up->ch=='B'){
+                    over=true;
+                }
+                else{
+                    current->ch='-';
+                    current=current->up;
+                    S.push('u');
+                    moves--;
+                }
             }
             else if(choice=='s'&&current->down!=NULL&&S.gettop()!='u'){
-                current->ch='-';
-                current=current->down;
-                S.push('d');
-                moves--;
+                if(current->down->ch=='B'){
+                    over=true;
+                }
+                else{
+                    current->ch='-';
+                    current=current->down;
+                    S.push('d');
+                    moves--;
+                }
             }
             else if(choice=='a'&&current->left!=NULL&&S.gettop()!='r'){
-                current->ch='-';
-                current=current->left;
-                S.push('l');
-                moves--;
+                if(current->left->ch=='B'){
+                    over=true;
+                }
+                else{
+                    current->ch='-';
+                    current=current->left;
+                    S.push('l');
+                    moves--;
+                }
             }
             else if(choice=='d'&&current->right!=NULL&&S.gettop()!='l'){
-                current->ch='-';
-                current=current->right;
-                S.push('r');
-                moves--;
+                if(current->right->ch=='B'){
+                    over=true;
+                }
+                else{
+                    current->ch='-';
+                    current=current->right;
+                    S.push('r');
+                    moves--;
+                }
             }
             if(current->ch=='c'){
                 score+=2;
@@ -548,6 +568,28 @@ class Board{
                 for(int i=0 ; i<=size+1; i++){
                     mvprintw(size+11,i*2,"#");
                 }
+                if(current!=NULL){
+                    if(current->up!=NULL){
+                        if(current->up->ch=='B'){
+                            mvprintw(size+15, 8,"BOMB IN NEIGHBOUR!!");        
+                        }
+                    }
+                    if(current->down!=NULL){
+                        if(current->down->ch=='B'){
+                            mvprintw(size+15, 8,"BOMB IN NEIGHBOUR!!");        
+                        }
+                    }
+                    if(current->left!=NULL){
+                        if(current->left->ch=='B'){
+                            mvprintw(size+15, 8,"BOMB IN NEIGHBOUR!!");        
+                        }
+                    }
+                    if(current->right!=NULL){
+                        if(current->right->ch=='B'){
+                            mvprintw(size+15, 8,"BOMB IN NEIGHBOUR!!");        
+                        }
+                    }
+                }
             }
             else{
                 Node* curr = head;
@@ -586,14 +628,14 @@ class Board{
                 
                 int n=5;
                 while(Q1.gettop()!=-1){
-                    mvprintw(n,8,"COIN COLLECTED AT: ");
+                    mvprintw(n,25,"COIN COLLECTED AT: ");
                     string str1=to_string(Q1.gettop());
                     Q1.dequeue();
-                    mvprintw(n,27,str1.c_str());
-                    mvprintw(n,29,",");
+                    mvprintw(n,44,str1.c_str());
+                    mvprintw(n,46,",");
                     string str2=to_string(Q1.gettop());
                     Q1.dequeue();
-                    mvprintw(n,30,str2.c_str());
+                    mvprintw(n,48,str2.c_str());
                     n++;
                 }
 
